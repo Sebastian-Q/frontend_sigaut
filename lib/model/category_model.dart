@@ -1,12 +1,12 @@
-class Category {
+class CategoryModel {
   int id = 0;
   String name = "";
   String clave = "";
   String description = "";
 
-  Category();
+  CategoryModel();
 
-  Category.fromJson(Map<String, dynamic> json)
+  CategoryModel.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         name = json["name"],
         clave = json["clave"],

@@ -98,3 +98,7 @@ Widget get customSizeHeight => const SizedBox(
 Widget get customWidth => const SizedBox(
   width: 16,
 );
+
+Widget get customMediumSizeHeight => const SizedBox(
+  height: 8,
+);

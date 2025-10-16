@@ -108,7 +108,7 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                 ),
                 actions: [
                   InkWell(
-                    onTap: () => widget.addFunction,
+                    onTap: () => widget.addFunction(),
                     child: Row(
                       children: [
                         Icon(
@@ -173,8 +173,15 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                 ),
               ),
               SliverFillRemaining(
-                hasScrollBody: true,
-                child: widget.body,
+                hasScrollBody: false,
+                child: Container(
+                  padding: EdgeInsets.only(bottom: 16, top: 16),
+                  color: Theme.of(context).colorScheme.segundoBackground,
+                  child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: widget.body,
+                  ),
+                ),
               ),
             ],
         ),
