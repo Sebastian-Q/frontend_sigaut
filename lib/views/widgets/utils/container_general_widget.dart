@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/custom_color_scheme.dart';
 import 'package:frontend/theme/custom_text_style.dart';
+import 'package:frontend/views/screen/sale_screen.dart';
+import 'package:frontend/views/widgets/utils/functions.dart';
 
 class ContainerGeneralWidget extends StatefulWidget {
   final Widget body;
   final Function refreshFunction;
   final String titleHeader;
-  final Function backFunction;
+  final String? routeNameBack;
   final Function addFunction;
   final Function? deleteSearchFunction;
   final Function? searchFunction;
@@ -17,7 +19,7 @@ class ContainerGeneralWidget extends StatefulWidget {
     required this.body,
     required this.refreshFunction,
     required this.titleHeader,
-    required this.backFunction,
+    this.routeNameBack,
     required this.addFunction,
     this.deleteSearchFunction,
     this.searchFunction,
@@ -95,11 +97,12 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                 expandedHeight: 150.0, //60
                 title: Text(
                   widget.titleHeader,
-                  style: CustomTextStyle.semiBold18.copyWith(color: Theme.of(context).colorScheme.cuartoText),
+                  style: CustomTextStyle.semiBold18.copyWith(
+                      color: Theme.of(context).colorScheme.cuartoText),
                 ),
                 automaticallyImplyLeading: false,
                 leading: IconButton(
-                  onPressed: () => widget.backFunction(),
+                  onPressed: () => goBack(context, widget.routeNameBack ?? SaleScreen.routeName),
                   icon: Icon(
                     Icons.arrow_back,
                     color: Theme.of(context).colorScheme.primeroIcon,

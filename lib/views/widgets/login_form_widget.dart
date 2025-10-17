@@ -3,8 +3,8 @@ import 'package:frontend/repository/user_repository.dart';
 import 'package:frontend/theme/custom_color_scheme.dart';
 import 'package:frontend/theme/custom_text_style.dart';
 import 'package:frontend/utils/validate_config.dart';
-import 'package:frontend/views/screen/products_screen.dart';
 import 'package:frontend/views/screen/register_screen.dart';
+import 'package:frontend/views/screen/sale_screen.dart';
 import 'package:frontend/views/widgets/utils/button_general_widget.dart';
 import 'package:frontend/views/widgets/utils/form_input_widget.dart';
 import 'package:frontend/views/widgets/utils/functions.dart';
@@ -124,7 +124,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       String response = await userRepository.login(username: usernameController.text, password: passwordController.text);
       Navigator.pop(context);
       if (response == "Exito") {
-        Navigator.pushNamed(context, ProductsScreen.routeName);
+        Navigator.pushNamed(context, SaleScreen.routeName);
       } else {
         showSnackBar(context, response, type: AlertTypeMessage.error);
       }

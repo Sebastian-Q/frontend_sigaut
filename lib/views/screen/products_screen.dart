@@ -145,10 +145,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
             productBloc.add(AllProductsEvent());
           },
           addFunction: addProduct,
-          backFunction: () {
-            ///TODO PENDIENTE
-            debugPrint("OPRIMIO backFunction");
-          },
         ),
       ),
     );

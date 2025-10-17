@@ -120,10 +120,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             categoryBloc.add(AllCategoriesEvent());
           },
           addFunction: addCategory,
-          backFunction: () {
-            ///TODO PENDIENTE
-            debugPrint("OPRIMIO backFunction");
-          },
         ),
       ),
     );
@@ -171,10 +167,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     border: Border.all(width: 2, color: Theme.of(context).colorScheme.quintoBorder)
                                 ),
                                 clipBehavior: Clip.antiAlias,
-                                child: Image.network(
-                                  //category.urlImage ??
-                                      "https://thumbs.dreamstime.com/b/l%C3%ADnea-icono-del-negro-avatar-perfil-de-usuario-121102131.jpg",
-                                  fit: BoxFit.cover,
+                                child: Icon(
+                                  Icons.category,
+                                  size: 32,
                                 ),
                               ),
                             ),

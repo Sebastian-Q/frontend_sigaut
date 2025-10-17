@@ -102,3 +102,7 @@ Widget get customWidth => const SizedBox(
 Widget get customMediumSizeHeight => const SizedBox(
   height: 8,
 );
+
+void goBack(BuildContext context, String routeName) {
+  Navigator.popAndPushNamed(context, routeName);
+}
