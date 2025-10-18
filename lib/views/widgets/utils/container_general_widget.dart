@@ -9,10 +9,11 @@ class ContainerGeneralWidget extends StatefulWidget {
   final Function refreshFunction;
   final String titleHeader;
   final String? routeNameBack;
-  final Function addFunction;
+  final Function? addFunction;
   final Function? deleteSearchFunction;
   final Function? searchFunction;
-  final String titleSearch;
+  final String? titleSearch;
+  final List<Widget> otherActions;
 
   const ContainerGeneralWidget({
     super.key,
@@ -20,10 +21,11 @@ class ContainerGeneralWidget extends StatefulWidget {
     required this.refreshFunction,
     required this.titleHeader,
     this.routeNameBack,
-    required this.addFunction,
+    this.addFunction,
     this.deleteSearchFunction,
     this.searchFunction,
-    required this.titleSearch,
+    this.titleSearch,
+    this.otherActions = const [],
   });
 
   @override
@@ -94,7 +96,7 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
               SliverAppBar(
                 pinned: true,
                 backgroundColor: Theme.of(context).colorScheme.primaryBackground,
-                expandedHeight: 150.0, //60
+                expandedHeight: widget.titleSearch != null ? 150.0 : 70.0,
                 title: Text(
                   widget.titleHeader,
                   style: CustomTextStyle.semiBold18.copyWith(
@@ -110,28 +112,30 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                   ),
                 ),
                 actions: [
-                  InkWell(
-                    onTap: () => widget.addFunction(),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: Theme.of(context).colorScheme.primeroIcon,
-                          size: 32,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 16),
-                          child: Text(
-                            "Registrar",
-                            style: CustomTextStyle.medium14.copyWith(color: Theme.of(context).colorScheme.cuartoText),
+                  if (widget.addFunction != null) ...{
+                    InkWell(
+                      onTap: () => widget.addFunction!.call(),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add,
+                            color: Theme.of(context).colorScheme.primeroIcon,
+                            size: 32,
                           ),
-                        )
-                      ],
+                          Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Text(
+                              "Registrar",
+                              style: CustomTextStyle.medium14.copyWith(color: Theme.of(context).colorScheme.cuartoText),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-
+                  },
+                  ...widget.otherActions,
                 ],
-                flexibleSpace: FlexibleSpaceBar(
+                flexibleSpace: widget.titleSearch != null ? FlexibleSpaceBar(
                   background: Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
@@ -173,7 +177,7 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                       ),
                     ),
                   ),
-                ),
+                ) : null,
               ),
               SliverFillRemaining(
                 hasScrollBody: false,

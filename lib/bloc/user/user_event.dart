@@ -5,7 +5,11 @@ abstract class UserEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetUserEvent extends UserEvent {}
+class GetUserEvent extends UserEvent {
+  final int id;
+
+  GetUserEvent({required this.id});
+}
 
 class SaveUserEvent extends UserEvent {
   final UserModel userModel;

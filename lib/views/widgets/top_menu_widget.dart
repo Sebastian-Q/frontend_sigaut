@@ -7,6 +7,9 @@ import 'package:frontend/theme/custom_text_style.dart';
 import 'package:frontend/views/screen/categories_screen.dart';
 import 'package:frontend/views/screen/login_screen.dart';
 import 'package:frontend/views/screen/products_screen.dart';
+import 'package:frontend/views/screen/profile_screen.dart';
+import 'package:frontend/views/screen/report_sale_screen.dart';
+import 'package:frontend/views/screen/sale_screen.dart';
 
 class TopMenuWidget extends StatefulWidget {
   const TopMenuWidget({super.key});
@@ -85,11 +88,23 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                //Navigator.pushNamed(context, ProfileScreen.routeName);
+                                Navigator.pushNamed(context, ProfileScreen.routeName);
                               },
                               title: "Perfil",
                               icon: Icon(
                                   Icons.account_circle_outlined,
+                                  size: 24,
+                                  color: Theme.of(context).colorScheme.cuartoIcon
+                              ),
+                            ),
+                            option(
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, SaleScreen.routeName);
+                              },
+                              title: "Vender",
+                              icon: Icon(
+                                  Icons.shopping_cart_outlined,
                                   size: 24,
                                   color: Theme.of(context).colorScheme.cuartoIcon
                               ),
@@ -109,7 +124,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                               },
                               title: "Categoria",
                               icon: Icon(
-                                  Icons.category,
+                                  Icons.category_outlined,
                                   size: 24,
                                   color: Theme.of(context).colorScheme.cuartoIcon
                               ),
@@ -118,8 +133,19 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
+                                Navigator.pushNamed(context, ReportSaleScreen.routeName);
+                              },
+                              title: "Reportes",
+                              icon: Icon(
+                                  Icons.monetization_on_outlined,
+                                  size: 24,
+                                  color: Theme.of(context).colorScheme.cuartoIcon
+                              ),
+                            ),
 
-
+                            option(
+                              onTap: () {
+                                Navigator.pop(context);
                                 Navigator.pushReplacementNamed(context, LoginScreen.routeName);
                               },
                               title: "Cerrar sesión",
