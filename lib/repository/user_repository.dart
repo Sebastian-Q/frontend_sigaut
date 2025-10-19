@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/api/api.dart';
 import 'package:frontend/model/user_model.dart';
 import 'package:frontend/utils/urls.dart';
+import 'package:frontend/views/widgets/utils/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class UserRepository {
+  final Api api = Api();
+
   Future<UserModel> getLocalUser() async {
     UserModel user = UserModel();
     final prefs = await SharedPreferences.getInstance();
@@ -27,68 +31,57 @@ class UserRepository {
   }
 
   Future<String> login({required String username, required String password}) async {
-    final url = Uri.parse('$urlBack/auth/login',);
     try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
+      final response = await api.post(
+        '/auth/login',
+        data: {
           'username': username,
           'password': password,
-        }),
+        },
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        UserModel userModel = UserModel.fromJson(responseData);
-        saveLocalUser(userModel);
-        return "Exito";
+        final data = response.data;
+        final user = UserModel.fromJson(data);
+
+        // Guardar el token en local
+        //final prefs = await SharedPreferences.getInstance();
+        //await prefs.setString('token', user.jwtToken?.accessToken ?? '');
+        saveLocalUser(user);
+        return "exito";
       } else {
         return "Usuario o contraseña incorrectos";
       }
-    } catch (error) {
-      return "$error";
+    } on DioException catch (e) {
+      debugPrint("Error: $e");
+      return "Usuario o contraseña incorrectos";
+    } catch (e) {
+      return "Error: $e";
     }
   }
 
   Future<bool> saveUser({required UserModel user}) async {
-    final url = Uri.parse('$urlBack/users');
     try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(user.toSave()),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return true;
-      } else {
-        throw Exception(response.body);
-      }
-    } catch (error) {
-      throw Exception(error.toString().split(": ").last);
+      final response = await api.post(urlUser, data: user.toSave());
+      debugPrint("response.data: ${response.data["data"]}");
+      UserModel userSave = UserModel.fromJson(response.data["data"]);
+      debugPrint("userSave: ${userSave.toMap()}");
+      saveLocalUser(userSave);
+      return response.statusCode == 201 || response.statusCode == 200;
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
+    } catch (e) {
+      throw Exception("Error al guardar usuario: $e");
     }
   }
 
   Future<bool> editUser({required UserModel user}) async {
-    final url = Uri.parse('$urlBack/user/${user.id}');
     try {
-      final response = await http.put(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(user.toMap()),
-      );
-      if (response.statusCode == 200) {
-        return true;
-      }
-    } catch (error) {
-      debugPrint("ERROR: $error");
+      final response = await api.put(urlUser, data: user.toMap());
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 }

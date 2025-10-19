@@ -34,8 +34,8 @@ class _SaleScreenState extends State<SaleScreen> {
   List<ProductModel> listProducts = [];
 
   /// Scanner
-  bool scannerEnabled = false; // 👈 controla si se muestra la cámara
-  final MobileScannerController cameraController = MobileScannerController(); // 👈 controlador del scanner
+  bool scannerEnabled = false;
+  final MobileScannerController cameraController = MobileScannerController();
   bool _isScanning = false;
 
   @override

@@ -4,8 +4,8 @@ import 'package:frontend/bloc/user/user_bloc.dart';
 import 'package:frontend/theme/custom_color_scheme.dart';
 import 'package:frontend/theme/custom_text_style.dart';
 import 'package:frontend/views/screen/login_screen.dart';
+import 'package:frontend/views/screen/sale_screen.dart';
 import 'package:frontend/views/widgets/register_form_widget.dart';
-import 'package:frontend/views/widgets/utils/alert_confirm_widget.dart';
 import 'package:frontend/views/widgets/utils/functions.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -33,12 +33,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
           if (state is SuccessfulState) {
             showSnackBar(context, state.message.toString(), type: AlertTypeMessage.success);
+            Future.delayed(const Duration(milliseconds: 500), () {
+              Navigator.pushNamed(context, SaleScreen.routeName);
+            });
           }
           if (state is MessageState) {
             showSnackBar(context, state.message.toString(), type: state.typeMessage);
-          }
-          if (state is ErrorState) {
-            confirmAlert(context, title: "Error", textContent: state.message, showCancel: false);
           }
         },
         child: Scaffold(

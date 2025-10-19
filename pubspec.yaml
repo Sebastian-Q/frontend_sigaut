@@ -50,6 +50,11 @@ dependencies:
   mobile_scanner: ^3.5.0
   cached_network_image: ^3.4.1
 
+  #IMAGE
+  file_picker: ^10.2.0
+  image_picker: ^1.1.0
+  open_filex: ^4.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

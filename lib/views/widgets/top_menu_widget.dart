@@ -146,6 +146,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
+                                userRepository.deleteLocalUser();
                                 Navigator.pushReplacementNamed(context, LoginScreen.routeName);
                               },
                               title: "Cerrar sesión",

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/custom_color_scheme.dart';
 import 'package:frontend/theme/custom_text_style.dart';
@@ -131,4 +132,15 @@ void showTopMenu(BuildContext context) {
       );
     },
   );
+}
+
+String getDioErrorMessage(DioException e) {
+  try {
+    if (e.response != null && e.response?.data != null) {
+      return e.response?.data['data'] ?? e.response?.data['message'] ?? 'Error desconocido';
+    }
+    return e.message ?? 'Error desconocido';
+  } catch (_) {
+    return 'Error desconocido';
+  }
 }

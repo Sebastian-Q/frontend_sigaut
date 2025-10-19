@@ -123,7 +123,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       loadingWidget(context);
       String response = await userRepository.login(username: usernameController.text, password: passwordController.text);
       Navigator.pop(context);
-      if (response == "Exito") {
+      if (response == "exito") {
         Navigator.pushNamed(context, SaleScreen.routeName);
       } else {
         showSnackBar(context, response, type: AlertTypeMessage.error);
@@ -151,9 +151,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               color: Theme.of(context).colorScheme.primeroIcon,
               size: 24,
             ),
-            actionOk: () {
-              //_setEmail();
-            },
+            actionOk: () {},
             child: Form(
               key: _emailKey,
               child: Padding(

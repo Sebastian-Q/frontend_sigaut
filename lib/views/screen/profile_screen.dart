@@ -10,6 +10,7 @@ import 'package:frontend/views/widgets/utils/alert_confirm_widget.dart';
 import 'package:frontend/views/widgets/utils/button_general_widget.dart';
 import 'package:frontend/views/widgets/utils/form_input_widget.dart';
 import 'package:frontend/views/widgets/utils/functions.dart';
+import 'package:frontend/views/widgets/utils/image_widget.dart';
 import 'package:frontend/views/widgets/utils/top_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -68,6 +69,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           if (state is SuccessfulState) {
             showSnackBar(context, state.message.toString(), type: AlertTypeMessage.success);
+            setState(() {
+              userBloc.add(GetUserEvent(id: userModel.id));
+            });
           }
           if (state is MessageState) {
             showSnackBar(context, "Error al actualizar información", type: state.typeMessage);
@@ -98,13 +102,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   key: _formProfileKey,
                   child: Column(
                     children: [
-                      /*Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: ImageWidget(
-                        title: "Imagen de perfil",
-                        urlImage: urlImageController.text,
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: SizedBox(
+                          height: 200,
+                          child: ImageWidget(
+                            title: "Imagen de perfil",
+                            onImageSelected: (file) {
+                              debugPrint("Archivo seleccionado: ${file?.file?.path}");
+                            },
+                            urlImage: "https://wallpapers.com/images/hd/anime-4k-pictures-q1cg89niv319ld1a.jpg",
+                          ),
+                        )
                       ),
-                    ),*/
                       FormInputWidget(
                         title: "Nombre",
                         required: true,

@@ -6,6 +6,7 @@ import 'package:frontend/views/screen/profile_screen.dart';
 import 'package:frontend/views/screen/register_screen.dart';
 import 'package:frontend/views/screen/report_sale_screen.dart';
 import 'package:frontend/views/screen/sale_screen.dart';
+import 'package:frontend/views/screen/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,8 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginScreen.routeName,
+      // 👇 Cambiamos la ruta inicial al splash
+      initialRoute: SplashScreen.routeName,
       routes: {
+        SplashScreen.routeName: (args) => const SplashScreen(),
         LoginScreen.routeName: (args) => const LoginScreen(),
         RegisterScreen.routeName: (args) => const RegisterScreen(),
         SaleScreen.routeName: (args) => const SaleScreen(),
