@@ -1,12 +1,13 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/api/api.dart';
 import 'package:frontend/model/product_model.dart';
 import 'package:frontend/model/sale_model.dart';
 import 'package:frontend/utils/urls.dart';
-import 'package:http/http.dart' as http;
+import 'package:frontend/views/widgets/utils/functions.dart';
 
 class SaleRepository {
+  final Api api = Api();
   static SaleRepository? _instance;
 
   factory SaleRepository() => _instance ??= SaleRepository._();
@@ -15,57 +16,46 @@ class SaleRepository {
 
   Future<List<SaleModel>> getSales({String? startDate, String? endDate}) async {
     List<SaleModel> listSales = [];
-    final url = Uri.parse(startDate != null && endDate != null ? '$urlBack/sales?startDate=$startDate&endDate=$endDate' : '$urlBack/sales');
     try {
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-      if (response.statusCode == 200) {
-        debugPrint("RESPONSE: ${response.body}");
-        final List<dynamic> data = json.decode(response.body);
-        listSales = data.map((item) => SaleModel.fromJson(item)).toList();
+      final response = await api.get(startDate != null && endDate != null ? '$urlBack$urlSale?startDate=$startDate&endDate=$endDate' : '$urlBack$urlSale');
+      debugPrint("response.data: ${response.data["data"]}");
+      if (response.data != null) {
+        listSales = List<SaleModel>.from(
+            (response.data["data"]).map((json) => SaleModel.fromJson(json))
+        );
       }
-    } catch (error) {
-      debugPrint("ERROR: $error");
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
+    } catch (e) {
+      throw Exception("Error al obtener categorias: $e");
     }
     return listSales;
   }
 
   Future<bool> createSale({required SaleModel saleModel}) async {
-    final url = Uri.parse('$urlBack/sale/save');
     try {
-      final response = await  http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(saleModel.toMap()),
-      );
-      if(response.statusCode == 201) {
+      final response = await api.post('$urlBack$urlSale', data: saleModel.toSaveMap());
+      debugPrint("response.data: ${response.data["data"]}");
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       }
+      return false;
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
     } catch (e) {
-      debugPrint("ERROR: $e");
+      throw Exception("Error al guardar categoria: $e");
     }
-    return false;
   }
 
   Future<ProductModel> addProduct({required String codeBar}) async {
     ProductModel productModel = ProductModel();
-    final url = Uri.parse('$urlBack/product/$codeBar');
     try {
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
+      final response = await api.get('$urlBack$urlProduct/barcode/$codeBar');
+      debugPrint("response.data: ${response.data["data"]}");
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        productModel = ProductModel.fromJson(responseData);
+        productModel = ProductModel.fromJson(response.data["data"]);
       } else {
         debugPrint('Error: ${response.statusCode}');
       }

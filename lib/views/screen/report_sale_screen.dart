@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/sale/sale_bloc.dart';
-import 'package:frontend/model/product_model.dart';
 import 'package:frontend/model/sale_model.dart';
 import 'package:frontend/theme/custom_color_scheme.dart';
 import 'package:frontend/theme/custom_text_style.dart';
@@ -22,138 +21,7 @@ class ReportSaleScreen extends StatefulWidget {
 
 class _ReportSaleScreenState extends State<ReportSaleScreen> {
   SaleBloc saleBloc = SaleBloc();
-  List<SaleModel> listSales = [
-    SaleModel()
-      ..id = 1
-      ..total = 250.50
-      ..amountSale = 3
-      ..dateSale = DateTime.parse("2025-10-15")
-      ..employee = "Juan Pérez"
-      ..payMethod = "Tarjeta"
-      ..productList = [
-        ProductModel()
-          ..id = 1
-          ..name = "Laptop HP 15"
-          ..barCode = "1234567890123"
-          ..price = 150.50
-          ..description = "Laptop HP 15.6'' con procesador Ryzen 5"
-          ..stock = 10
-          ..quantityMinima = 2
-          ..accountSale = 1,
-        ProductModel()
-          ..id = 2
-          ..name = "Mouse Logitech M90"
-          ..barCode = "9876543210987"
-          ..price = 50.00
-          ..description = "Mouse óptico con cable USB"
-          ..stock = 30
-          ..quantityMinima = 5
-          ..accountSale = 2,
-      ],
-
-    SaleModel()
-      ..id = 2
-      ..total = 99.99
-      ..amountSale = 1
-      ..dateSale = DateTime.parse("2025-10-16")
-      ..employee = "María López"
-      ..payMethod = "Efectivo"
-      ..productList = [
-        ProductModel()
-          ..id = 3
-          ..name = "Teclado Mecánico Redragon"
-          ..barCode = "4567891234567"
-          ..price = 99.99
-          ..description = "Teclado mecánico retroiluminado RGB"
-          ..stock = 15
-          ..quantityMinima = 3
-          ..accountSale = 1,
-      ],
-
-    SaleModel()
-      ..id = 3
-      ..total = 560.75
-      ..amountSale = 5
-      ..dateSale = DateTime.parse("2025-10-17")
-      ..employee = "Carlos Díaz"
-      ..payMethod = "Transferencia"
-      ..productList = [
-        ProductModel()
-          ..id = 4
-          ..name = "Monitor LG 27'' UHD"
-          ..barCode = "3216549870321"
-          ..price = 320.75
-          ..description = "Monitor 4K UHD con panel IPS"
-          ..stock = 8
-          ..quantityMinima = 2
-          ..accountSale = 1,
-        ProductModel()
-          ..id = 5
-          ..name = "Cable HDMI 2.1"
-          ..barCode = "7418529632587"
-          ..price = 30.00
-          ..description = "Cable HDMI 4K de 2 metros"
-          ..stock = 50
-          ..quantityMinima = 10
-          ..accountSale = 4,
-      ],
-
-    SaleModel()
-      ..id = 4
-      ..total = 45.00
-      ..amountSale = 2
-      ..dateSale = DateTime.parse("2025-10-18")
-      ..employee = "Ana Torres"
-      ..payMethod = "Efectivo"
-      ..productList = [
-        ProductModel()
-          ..id = 6
-          ..name = "Cuaderno A4 Profesional"
-          ..barCode = "1597534862200"
-          ..price = 15.00
-          ..description = "Cuaderno de 100 hojas rayado"
-          ..stock = 60
-          ..quantityMinima = 10
-          ..accountSale = 2,
-        ProductModel()
-          ..id = 7
-          ..name = "Bolígrafo Azul BIC"
-          ..barCode = "9513578524862"
-          ..price = 7.50
-          ..description = "Paquete de 2 bolígrafos de tinta azul"
-          ..stock = 100
-          ..quantityMinima = 20
-          ..accountSale = 2,
-      ],
-
-    SaleModel()
-      ..id = 5
-      ..total = 1250.00
-      ..amountSale = 2
-      ..dateSale = DateTime.parse("2025-10-18")
-      ..employee = "Luis Ramírez"
-      ..payMethod = "Crédito"
-      ..productList = [
-        ProductModel()
-          ..id = 8
-          ..name = "iPhone 15 Pro"
-          ..barCode = "8524569637891"
-          ..price = 1200.00
-          ..description = "Smartphone Apple con 256GB"
-          ..stock = 5
-          ..quantityMinima = 1
-          ..accountSale = 1,
-        ProductModel()
-          ..id = 9
-          ..name = "Funda protectora MagSafe"
-          ..barCode = "1472583691472"
-          ..price = 50.00
-          ..description = "Funda de silicona con imán MagSafe"
-          ..stock = 20
-          ..quantityMinima = 3
-          ..accountSale = 1,
-      ],
-  ];
+  List<SaleModel> listSales = [];
   bool loading = false;
 
   final TextEditingController startDateController = TextEditingController();
@@ -180,7 +48,7 @@ class _ReportSaleScreenState extends State<ReportSaleScreen> {
 
           if (state is AllSalesState) {
             setState(() {
-              //listSales = state.listSales;
+              listSales = state.listSales;
               loading = true;
             });
           }

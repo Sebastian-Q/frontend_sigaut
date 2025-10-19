@@ -46,7 +46,6 @@ class _SaleScreenState extends State<SaleScreen> {
 
   void getUser() async {
     user = await userRepository.getLocalUser();
-    debugPrint("USER: ${user.toMap()}");
   }
 
   @override
@@ -372,7 +371,10 @@ class _SaleScreenState extends State<SaleScreen> {
                         ..payMethod = payCash ? "Tarjeta" : "Efectivo"
                         ..employee = user.username
                         ..dateSale = DateTime.now()
-                        ..productList = listProducts;
+                        ..productList = listProducts
+                        ..idUser = user.id;
+
+                      debugPrint("SALEMODE: ${saleModel.toSaveMap()}");
                       saleBloc.add(SaveSaleEvent(saleModel: saleModel));
                     },
                   ),

@@ -8,6 +8,7 @@ class SaleModel {
   String? employee;
   String? payMethod;
   List<ProductModel> productList = [];
+  int? idUser;
 
   SaleModel();
 
@@ -27,7 +28,19 @@ class SaleModel {
       "dateSale": dateSale.toIso8601String(),
       "employee": employee,
       "payMethod": payMethod,
-      "productList": productList.map((product) => product.toMap()).toList()
+      "productsList": productList.map((product) => product.toMap()).toList()
+    };
+  }
+
+  Map<String, dynamic> toSaveMap() {
+    return {
+      "total": total,
+      "amountSale": amountSale,
+      "dateSale": dateSale.toIso8601String(),
+      "employee": employee,
+      "payMethod": payMethod,
+      "productsList": productList.map((product) => product.toMap()).toList(),
+      "idUser": idUser
     };
   }
 }
