@@ -15,8 +15,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     ///LISTO
     on<AllCategoriesEvent>((event, emit) async {
       emit(StartLoadingState());
-      //List<CategoryModel> listProducts = await productRepository.allProducts();
-      emit(AllCategoriesState(listCategories: []));
+      try {
+        List<CategoryModel> listCategories = await categoryRepository.allCategories();
+        emit(AllCategoriesState(listCategories: listCategories));
+      } catch (error) {
+        emit(MessageState(message: error.toString(), typeMessage: AlertTypeMessage.error));
+      }
       emit(EndLoadingState());
     });
 
@@ -24,7 +28,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<SaveCategoryEvent>((event, emit) async {
       emit(StartLoadingState(message: "Guardando Categoria"));
       try {
-        bool response = true;//await productRepository.createProduct(productModel: event.productModel);
+        bool response = await categoryRepository.createCategory(categoryModel: event.categoryModel);
         if(response) {
           emit(SuccessfulState(message: "Categoria guardado exitosamente"));
         } else {
@@ -40,7 +44,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<EditCategoryEvent>((event, emit) async {
       emit(StartLoadingState(message: "Actualizando categoria"));
       try {
-        bool response = true; //await productRepository.updateProduct(productModel: event.productModel);
+        bool response = await categoryRepository.updateCategory(categoryModel: event.categoryModel);
         if(response) {
           emit(SuccessfulState(message: event.messageSuccess ?? "Categoria editada exitosamente"));
         } else {
@@ -56,7 +60,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<DeleteCategoryEvent>((event, emit) async {
       emit(StartLoadingState(message: "Eliminando categoria"));
       try {
-        bool response = true;//await productRepository.deleteProduct(event.id);
+        bool response = await categoryRepository.deleteCategory(id: event.id);
         if(response) {
           emit(SuccessfulState(message: "Categoria eliminado exitosamente", exitWidget: false));
         } else {

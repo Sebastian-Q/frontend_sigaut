@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/category/category_bloc.dart';
 import 'package:frontend/model/category_model.dart';
+import 'package:frontend/model/user_model.dart';
+import 'package:frontend/repository/user_repository.dart';
 import 'package:frontend/utils/validate_config.dart';
 import 'package:frontend/views/widgets/utils/form_input_widget.dart';
 import 'package:frontend/views/widgets/utils/show_custom_dialog_widget.dart';
@@ -18,6 +20,7 @@ class CategoryFormWidget extends StatefulWidget {
 class _CategoryFormWidgetState extends State<CategoryFormWidget> {
   late CategoryBloc categoryBloc;
   CategoryModel categoryModel = CategoryModel();
+  UserRepository userRepository = UserRepository();
 
   final _formCategoryKey = GlobalKey<FormState>();
   late TextEditingController claveController;
@@ -101,6 +104,8 @@ class _CategoryFormWidgetState extends State<CategoryFormWidget> {
   void _submitForm() async {
     if (_formCategoryKey.currentState!.validate()) {
       _formCategoryKey.currentState!.save();
+      UserModel user = await userRepository.getLocalUser();
+      categoryModel.idUser = user.id;
       if (categoryModel.id == 0) {
         categoryBloc.add(SaveCategoryEvent(categoryModel: categoryModel));
       } else {

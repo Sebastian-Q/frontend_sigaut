@@ -106,9 +106,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             confirmAlert(context, title: "Error", textContent: state.message, showCancel: false);
           }
 
-          if (state is AllCategoriesEvent) {
+          if (state is AllCategoriesState) {
             setState(() {
-              //listProducts = state.listProducts;
+              listCategories = state.listCategories;
             });
           }
         },

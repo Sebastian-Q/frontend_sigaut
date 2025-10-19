@@ -3,6 +3,7 @@ class CategoryModel {
   String name = "";
   String clave = "";
   String description = "";
+  int? idUser;
 
   CategoryModel();
 
@@ -18,6 +19,15 @@ class CategoryModel {
       "name": name,
       "clave": clave,
       "description": description
+    };
+  }
+
+  Map<String, dynamic> toSaveMap() {
+    return {
+      "name": name,
+      "clave": clave,
+      "description": description,
+      "idUser": idUser
     };
   }
 }
