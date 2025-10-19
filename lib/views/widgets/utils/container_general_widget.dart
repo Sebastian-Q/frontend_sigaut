@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/custom_color_scheme.dart';
 import 'package:frontend/theme/custom_text_style.dart';
-import 'package:frontend/views/screen/sale_screen.dart';
 import 'package:frontend/views/widgets/utils/functions.dart';
 
 class ContainerGeneralWidget extends StatefulWidget {
@@ -104,9 +103,12 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                 ),
                 automaticallyImplyLeading: false,
                 leading: IconButton(
-                  onPressed: () => goBack(context, widget.routeNameBack ?? SaleScreen.routeName),
+                  onPressed: () {
+                    if (!mounted) return;
+                    showTopMenu(context);
+                  },
                   icon: Icon(
-                    Icons.arrow_back,
+                    Icons.menu,
                     color: Theme.of(context).colorScheme.primeroIcon,
                     size: 32,
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/theme/custom_color_scheme.dart';
 import 'package:frontend/theme/custom_text_style.dart';
+import 'package:frontend/views/widgets/top_menu_widget.dart';
 
 enum AlertTypeMessage { error, success, warning, info, ask }
 
@@ -105,4 +106,29 @@ Widget get customMediumSizeHeight => const SizedBox(
 
 void goBack(BuildContext context, String routeName) {
   Navigator.popAndPushNamed(context, routeName);
+}
+
+void showTopMenu(BuildContext context) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    transitionDuration: const Duration(milliseconds: 500),
+    barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+    barrierColor: Colors.black.withOpacity(0.5),
+    pageBuilder: (context, _, __) {
+      return TopMenuWidget();
+    },
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeIn,
+        ).drive(Tween<Offset>(
+          begin: const Offset(0, -1.0),
+          end: Offset.zero,
+        )),
+        child: child,
+      );
+    },
+  );
 }
