@@ -20,55 +20,7 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   CategoryBloc categoryBloc = CategoryBloc();
-  List<CategoryModel> listCategories = [
-    CategoryModel()
-      ..id = 1
-      ..name = "Lubricantes"
-      ..clave = "LUB"
-      ..description = "Aceites, grasas y aditivos para motores y transmisiones.",
-
-    CategoryModel()
-      ..id = 2
-      ..name = "Filtros"
-      ..clave = "FIL"
-      ..description = "Filtros de aceite, aire, combustible y cabina para distintos vehículos.",
-
-    CategoryModel()
-      ..id = 3
-      ..name = "Frenos"
-      ..clave = "FRE"
-      ..description = "Pastillas, discos, tambores y líquido de frenos para autos y camiones.",
-
-    CategoryModel()
-      ..id = 4
-      ..name = "Suspensión"
-      ..clave = "SUS"
-      ..description = "Amortiguadores, resortes y componentes de suspensión automotriz.",
-
-    CategoryModel()
-      ..id = 5
-      ..name = "Eléctrico"
-      ..clave = "ELE"
-      ..description = "Baterías, bujías, alternadores, luces y componentes eléctricos.",
-
-    CategoryModel()
-      ..id = 6
-      ..name = "Refrigerantes"
-      ..clave = "REF"
-      ..description = "Anticongelantes, líquidos refrigerantes y aditivos de enfriamiento.",
-
-    CategoryModel()
-      ..id = 7
-      ..name = "Accesorios"
-      ..clave = "ACC"
-      ..description = "Limpiaparabrisas, alfombrillas, cubreasientos y otros accesorios.",
-
-    CategoryModel()
-      ..id = 8
-      ..name = "Herramientas"
-      ..clave = "HER"
-      ..description = "Llaves, gatos hidráulicos y herramientas para mantenimiento automotriz.",
-  ];
+  List<CategoryModel> listCategories = [];
 
   @override
   void initState() {

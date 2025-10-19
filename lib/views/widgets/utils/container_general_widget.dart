@@ -194,7 +194,9 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
               ),
             ],
         ),
-        onRefresh: () => widget.refreshFunction(),
+        onRefresh: () async {
+          await widget.refreshFunction();
+        },
       ),
     );
   }

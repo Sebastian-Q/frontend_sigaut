@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:frontend/model/category_model.dart';
 
 class ProductModel {
   int id = 0;
@@ -9,7 +9,8 @@ class ProductModel {
   double stock = 0.0;
   double quantityMinima = 0.0;
   double accountSale = 0;
-  Category? category;
+  CategoryModel? category;
+  int? idUser;
 
   ProductModel();
 
@@ -20,7 +21,8 @@ class ProductModel {
         price = json["price"],
         description = json["description"],
         stock = json["stock"],
-        quantityMinima = json["quantityMinima"];
+        quantityMinima = json["quantityMinima"],
+        category = CategoryModel.fromJson(json["category"]);
 
   Map<String, dynamic> toMap() {
     return {
@@ -32,6 +34,21 @@ class ProductModel {
       "stock": stock,
       "quantityMinima": quantityMinima,
       "accountSale": accountSale,
+      "category": category?.toMap(),
+    };
+  }
+
+  Map<String, dynamic> toSaveMap() {
+    return {
+      "name": name,
+      "barCode": barCode,
+      "price": price,
+      "description": description,
+      "stock": stock,
+      "quantityMinima": quantityMinima,
+      "accountSale": accountSale,
+      "idCategory": category?.id,
+      "idUser": idUser,
     };
   }
 }

@@ -1,11 +1,13 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/api/api.dart';
 import 'package:frontend/model/product_model.dart';
 import 'package:frontend/utils/urls.dart';
-import 'package:http/http.dart' as http;
+import 'package:frontend/views/widgets/utils/functions.dart';
 
 class ProductRepository {
+  final Api api = Api();
+
   static ProductRepository? _instance;
 
   factory ProductRepository() => _instance ??= ProductRepository._();
@@ -15,82 +17,71 @@ class ProductRepository {
   ///LISTO
   Future<List<ProductModel>> allProducts() async {
     List<ProductModel> listProducts = [];
-    final url = Uri.parse('$urlBack/products');
     try {
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        listProducts = data.map((item) => ProductModel.fromJson(item)).toList();
+      final response = await api.get(urlProduct);
+      debugPrint("response.data: ${response.data["data"]}");
+      if (response.data != null) {
+        listProducts = List<ProductModel>.from(
+            (response.data["data"]).map((json) => ProductModel.fromJson(json))
+        );
       }
-    } catch (error) {
-      debugPrint("ERROR: $error");
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
+    } catch (e) {
+      throw Exception("Error al obtener categorias: $e");
     }
     return listProducts;
   }
 
   ///LISTO
   Future<bool> createProduct({required ProductModel productModel}) async {
-    final url = Uri.parse('$urlBack/product/save');
     try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(productModel.toMap()),
-      );
+      final response = await api.post(urlProduct, data: productModel.toSaveMap());
+      debugPrint("response.data: ${response.data["data"]}");
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
-      } else {
-        throw Exception(response.body);
       }
-    } catch (error) {
-      throw Exception(error.toString().split(": ").last);
+      return false;
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
+    } catch (e) {
+      throw Exception("Error al guardar categoria: $e");
     }
   }
 
   ///LISTO
   Future<bool> updateProduct({required ProductModel productModel}) async {
-    final url = Uri.parse('$urlBack/product/${productModel.id}');
     try {
-      final response = await http.put(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(productModel.toMap()),
-      );
-      if (response.statusCode == 200) {
+      final response = await api.put(urlProduct, data: productModel.toMap());
+      debugPrint("response.data: ${response.data["data"]}");
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
-      } else {
-        throw Exception(response.body);
       }
-    } catch (error) {
-      throw Exception(error.toString().split(": ").last);
+      return false;
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
+    } catch (e) {
+      throw Exception("Error al guardar categoria: $e");
     }
   }
 
   ///LISTO
   Future<bool> deleteProduct(int id) async {
-    final url = Uri.parse('$urlBack/product/$id');
     try {
-      final response = await http.delete(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-      if (response.statusCode == 200) {
+      final response = await api.delete("$urlProduct/$id");
+      debugPrint("response.data: ${response.data["data"]}");
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       }
-    } catch (error) {
-      debugPrint("ERROR: $error");
+      return false;
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
+    } catch (e) {
+      throw Exception("Error al eliminar categoria: $e");
     }
-    return false;
   }
 }

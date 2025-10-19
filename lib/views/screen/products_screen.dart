@@ -19,80 +19,7 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   ProductBloc productBloc = ProductBloc();
-  List<ProductModel> listProducts = [
-    ProductModel()
-      ..id = 1
-      ..name = "Aceite para motor 5W-30"
-      ..price = 250.50
-      ..barCode = "7501234567890"
-      ..description = "Aceite sintético para motores de gasolina. Mejora el rendimiento."
-      ..stock = 35
-      ..quantityMinima = 5
-      ..accountSale = 10,
-    ProductModel()
-      ..id = 2
-      ..name = "Filtro de aire"
-      ..price = 120.00
-      ..barCode = "7502345678901"
-      ..description = "Filtro de aire estándar para autos compactos."
-      ..stock = 50
-      ..quantityMinima = 8
-      ..accountSale = 15,
-    ProductModel()
-      ..id = 3
-      ..name = "Bujía NGK"
-      ..price = 85.00
-      ..barCode = "7503456789012"
-      ..description = "Bujía de encendido de alto rendimiento NGK."
-      ..stock = 100
-      ..quantityMinima = 10
-      ..accountSale = 25,
-    ProductModel()
-      ..id = 4
-      ..name = "Anticongelante 1L"
-      ..price = 90.00
-      ..barCode = "7504567890123"
-      ..description = "Anticongelante y refrigerante de larga duración."
-      ..stock = 60
-      ..quantityMinima = 5
-      ..accountSale = 18,
-    ProductModel()
-      ..id = 5
-      ..name = "Líquido de frenos DOT-4"
-      ..price = 110.00
-      ..barCode = "7505678901234"
-      ..description = "Líquido de frenos de alto punto de ebullición DOT-4."
-      ..stock = 40
-      ..quantityMinima = 6
-      ..accountSale = 12,
-    ProductModel()
-      ..id = 6
-      ..name = "Limpiaparabrisas universal"
-      ..price = 75.50
-      ..barCode = "7506789012345"
-      ..description = "Par de limpiaparabrisas de 21 pulgadas, modelo universal."
-      ..stock = 25
-      ..quantityMinima = 4
-      ..accountSale = 8,
-    ProductModel()
-      ..id = 7
-      ..name = "Batería 12V 600A"
-      ..price = 1450.00
-      ..barCode = "7507890123456"
-      ..description = "Batería automotriz de alto desempeño, libre de mantenimiento."
-      ..stock = 10
-      ..quantityMinima = 2
-      ..accountSale = 3,
-    ProductModel()
-      ..id = 8
-      ..name = "Juego de pastillas de freno"
-      ..price = 320.00
-      ..barCode = "7508901234567"
-      ..description = "Pastillas de freno cerámicas, compatibles con sedanes compactos."
-      ..stock = 20
-      ..quantityMinima = 5
-      ..accountSale = 7,
-  ];
+  List<ProductModel> listProducts = [];
 
 
   @override
@@ -133,7 +60,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
           if (state is AllProductsState) {
             setState(() {
-              //listProducts = state.listProducts;
+              listProducts = state.listProducts;
             });
           }
         },

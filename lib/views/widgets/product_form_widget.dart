@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/bloc/product/product_bloc.dart';
+import 'package:frontend/model/category_model.dart';
 import 'package:frontend/model/product_model.dart';
+import 'package:frontend/model/user_model.dart';
+import 'package:frontend/repository/category_repository.dart';
+import 'package:frontend/repository/user_repository.dart';
 import 'package:frontend/utils/validate_config.dart';
 import 'package:frontend/views/widgets/utils/form_input_widget.dart';
 import 'package:frontend/views/widgets/utils/show_custom_dialog_widget.dart';
@@ -19,6 +23,7 @@ class ProductFormWidget extends StatefulWidget {
 class _ProductFormWidgetState extends State<ProductFormWidget> {
   late ProductBloc productBloc;
   ProductModel productModel = ProductModel();
+  UserRepository userRepository = UserRepository();
 
   final _formProductKey = GlobalKey<FormState>();
   late TextEditingController nameController;
@@ -29,6 +34,7 @@ class _ProductFormWidgetState extends State<ProductFormWidget> {
   late TextEditingController descriptionController;
 
   late TextEditingController categoryController;
+  CategoryModel? selectedCategory;
 
   @override
   void initState() {
@@ -36,6 +42,7 @@ class _ProductFormWidgetState extends State<ProductFormWidget> {
     productBloc = context.read<ProductBloc>();
     if (widget.productModel != null) {
       productModel = widget.productModel!;
+      selectedCategory = productModel.category;
     }
     nameController = TextEditingController(text: productModel.name);
     codeBarController = TextEditingController(text: productModel.barCode);
@@ -125,6 +132,7 @@ class _ProductFormWidgetState extends State<ProductFormWidget> {
                 FormInputWidget(
                   title: "Precio",
                   required: true,
+                  bottomPadding: 8,
                   fieldController: priceController,
                   textAlign: TextAlign.center,
                   onSave: (value) {
@@ -137,6 +145,51 @@ class _ProductFormWidgetState extends State<ProductFormWidget> {
                     ValidateConfig.decimalPrecision(),
                     ValidateConfig.whiteSpaces()
                   ],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                  child: FutureBuilder<List<CategoryModel>>(
+                    future: getCategories(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error al cargar categorías');
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Text('No hay categorías disponibles');
+                      }
+
+                      final categories = snapshot.data!;
+
+                      return DropdownButtonFormField<CategoryModel>(
+                        decoration: InputDecoration(
+                          labelText: 'Categoría',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          contentPadding: const EdgeInsets.all(16),
+                        ),
+                        value: selectedCategory,
+                        items: categories.map((cat) {
+                          return DropdownMenuItem<CategoryModel>(
+                            value: cat,
+                            child: Text(cat.name),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCategory = value;
+                            productModel.category = value!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) return 'Seleccione una categoría';
+                          return null;
+                        },
+                      );
+                    },
+                  ),
                 ),
                 FormInputWidget(
                   bottomPadding: 8,
@@ -158,11 +211,24 @@ class _ProductFormWidgetState extends State<ProductFormWidget> {
   void _submitForm() async {
     if (_formProductKey.currentState!.validate()) {
       _formProductKey.currentState!.save();
+      UserModel user = await userRepository.getLocalUser();
+      productModel.idUser = user.id;
       if (productModel.id == 0) {
         productBloc.add(SaveProductEvent(productModel: productModel));
       } else {
         productBloc.add(EditProductEvent(productModel: productModel));
       }
+    }
+  }
+
+  Future<List<CategoryModel>> getCategories() async {
+    CategoryRepository categoryRepository = CategoryRepository();
+    try {
+      List<CategoryModel> listCategories = await categoryRepository.allCategories();
+      return listCategories;
+    } catch (e) {
+      debugPrint("ERROR: $e");
+      throw Exception('Error al obtener los datos');
     }
   }
 }
