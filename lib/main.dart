@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/screen/categories_screen.dart';
-import 'package:frontend/views/screen/login_screen.dart';
-import 'package:frontend/views/screen/products_screen.dart';
-import 'package:frontend/views/screen/profile_screen.dart';
-import 'package:frontend/views/screen/register_screen.dart';
-import 'package:frontend/views/screen/report_sale_screen.dart';
-import 'package:frontend/views/screen/sale_screen.dart';
-import 'package:frontend/views/screen/splash_screen.dart';
+import 'package:frontend/features/category/view/categories_screen.dart';
+import 'package:frontend/features/user/view/login_screen.dart';
+import 'package:frontend/features/product/view/products_screen.dart';
+import 'package:frontend/features/user/view/profile_screen.dart';
+import 'package:frontend/features/user/view/register_screen.dart';
+import 'package:frontend/features/sale/view/report_sale_screen.dart';
+import 'package:frontend/features/sale/view/sale_screen.dart';
+import 'package:frontend/features/others/view/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
